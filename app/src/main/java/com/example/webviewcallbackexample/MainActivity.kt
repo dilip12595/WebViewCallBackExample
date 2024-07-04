@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         // Check and use as per your requirements if data is not null
         data?.let {
-            Toast.makeText(this, "We have received this message from web site : $it", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Received data : $it", Toast.LENGTH_LONG).show()
         }
 
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

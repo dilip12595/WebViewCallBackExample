@@ -3,17 +3,21 @@ package com.example.webviewcallbackexample
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.webkit.JavascriptInterface
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
 
 class WebViewActivity : AppCompatActivity() {
 
-    // Web view id
-    private var loadWebView: WebView? = null
+    // view's id
+    private lateinit var loadWebView: WebView
+    private lateinit var progressBar: ProgressBar
 
     @SuppressLint("MissingInflatedId", "SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,40 +26,40 @@ class WebViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_web_view)
 
         // External url that will be load in web view
-        val url = "https://visionias.in/student/pt/test_result_custom.php?test_id=13020"
+        val url = "https://visiontest.visionias.in/student/pt/test_result_custom_app.php?test_id=603&mid=1480651&platform=Android"
 
         // Retrieving view id from the xml file
         loadWebView = findViewById(R.id.webViewBtn)
 
         // Setting javascript enabled true
-        loadWebView?.settings?.javaScriptEnabled = true
+        loadWebView.settings.javaScriptEnabled = true
 
         // Setting webViewClient so we can load the web view in app activity otherwise it will
         // open in external browser
-        loadWebView?.webViewClient = WebViewClient()
+        loadWebView.webViewClient = WebViewClient()
 
         // Adding JavaScript Interface to get callback from web page
-        loadWebView?.addJavascriptInterface(WebAppInterface(this), "Android")
+        loadWebView.addJavascriptInterface(WebAppInterface(this), "Android")
 
         // Load your webpage using web url
-        // loadWebView?.loadUrl(url)
+        loadWebView.loadUrl(url)
 
         // Load html data into web view
-        loadWebView?.loadData("<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "<head>\n" +
-                "    <title>WebView Test</title>\n" +
-                "    <script type=\"text/javascript\">\n" +
-                "        function sendToAndroid() {\n" +
-                "            Android.getData(\"Hello from WebView\");\n" +
-                "        }\n" +
-                "    </script>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "    <h1>Hello WebView</h1>\n" +
-                "    <button onclick=\"sendToAndroid()\">Click me to get callback Data</button>\n" +
-                "</body>\n" +
-                "</html>", "text/html; charset=utf-8", "UTF-8")
+//        loadWebView.loadData("<!DOCTYPE html>\n" +
+//                "<html>\n" +
+//                "<head>\n" +
+//                "    <title>WebView Test</title>\n" +
+//                "    <script type=\"text/javascript\">\n" +
+//                "        function sendDataToApp() {\n" +
+//                "            Android.callBackData(\"Hello from WebView\");\n" +
+//                "        }\n" +
+//                "    </script>\n" +
+//                "</head>\n" +
+//                "<body>\n" +
+//                "    <h1>Hello WebView</h1>\n" +
+//                "    <button onclick=\"sendDataToApp()\">Click me to get callback Data</button>\n" +
+//                "</body>\n" +
+//                "</html>", "text/html; charset=utf-8", "UTF-8")
 
     }
 
@@ -63,7 +67,7 @@ class WebViewActivity : AppCompatActivity() {
 
         /** Get the data as per the requirements from the web page */
         @JavascriptInterface
-        fun getData(data: String) {
+        fun callBackData(data: String) {
             // Handle the callback here
             // For example, you can show a toast or start a new activity
 
